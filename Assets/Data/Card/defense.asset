@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bee33857582381d4b9001911a6ba924b, type: 3}
   m_Name: defense
   m_EditorClassIdentifier: 
-  <UpText>k__BackingField: 
-  <MidText>k__BackingField: 
-  <BottomText>k__BackingField: 
-  <CostTime>k__BackingField: 0
-  <Image>k__BackingField: {fileID: 0}
+  <UpText>k__BackingField: resist
+  <MidText>k__BackingField: defense
+  <BottomText>k__BackingField: Shield defense
+  <CostTime>k__BackingField: 5
+  <Image>k__BackingField: {fileID: 21300000, guid: 480830f3601fdbf4ebd9d9549eabeee2, type: 3}
