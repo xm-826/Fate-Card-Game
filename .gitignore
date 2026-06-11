@@ -1,0 +1,41 @@
+# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# Visual Studio
+.vs/
+*.csproj
+*.sln
+*.unityproj
+*.booproj
+*.svd
+*.pidb
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Rider
+.idea/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Unity meta files (keep these — they are important)
+# *.meta is NOT ignored, Unity needs them
+
+# MemoryCaptures
+MemoryCaptures/
+
+# Crashlytics
+crashlytics-build.properties
