@@ -11,6 +11,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private TMP_Text costTime;
     [SerializeField] private SpriteRenderer image;
     [SerializeField] private GameObject Warpper;
+   
 
     //拖动时的起始位置
     private Vector3 dragStartPosition;
@@ -36,6 +37,7 @@ public class CardView : MonoBehaviour
     void OnMouseEnter()
     {
         if(!interactions.Instance.PlayerCanHover()) return;
+        //Debug.Log("悬停？");
         Warpper.SetActive(false);
         Vector3 pos =new (transform.position.x,-2,0);
         CardViewHoverSystem.Instance.Show(Card,pos);
@@ -49,7 +51,7 @@ public class CardView : MonoBehaviour
         Warpper.SetActive(true);
     }
 
-    
+    //卡牌可拖动
     //鼠标点击
     void OnMouseDown()
     {
@@ -62,6 +64,8 @@ public class CardView : MonoBehaviour
         //记录初始位置信息
         dragStartPosition = transform.position;
         dragStartRotation =transform.rotation;
+        Debug.Log("位置:"+dragStartPosition);
+        
         //将卡牌的旋转归零，也就是不旋转
         transform.rotation = Quaternion.Euler(0,0,0);
         //将位置设为鼠标所在位置，实现拖动,需要额外的设置函数来求得鼠标位置信息，将Z设为-1，为了与摄像机离得近一些
@@ -81,10 +85,21 @@ public class CardView : MonoBehaviour
     void OnMouseUp()
     {
         if(!interactions.Instance.PlayerCanInteract()) return;
-        //从当前卡牌向前发射射线，击中执行。。。。
-        if(Physics.Raycast(transform.position ,Vector3.forward,out RaycastHit hit,10f))
+        //从当前卡牌向前发射射线，击中执行（有bug，击中卡牌本身也会击中，）
+        if(Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f))
         {
-            //play card的作用
+            // 修改bug..命中目标如果是卡牌，视为未命中，恢复到原位置，
+            // 在 hit.collider 挂载的 GameObject 上查找有没有 CardView 脚本组件
+            // 因为只有卡牌 GameObject 上才会挂着 CardView 脚本，所以这个判断等价于："被射线击中的东西是不是一张卡牌
+            if(hit.collider.GetComponent<CardView>() != null)
+            {
+                transform.position = dragStartPosition;
+                transform.rotation = dragStartRotation;
+            }
+            else
+            {
+                //play card的作用
+            }
         }
         //未击中，则恢复到最初位置
         else

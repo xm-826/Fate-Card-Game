@@ -53,6 +53,7 @@ public class CardSystem : Singleton<CardSystem>
         //执行抽卡
         for(int i=0;i<actualAmount;i++)
         {
+            interactions.Instance.CardsAreAnimation = true;
             yield return DrawCard();
         }
         if(notDrawnAmount >0)
@@ -61,6 +62,7 @@ public class CardSystem : Singleton<CardSystem>
             RefillDeck();
             for(int i=0 ; i < notDrawnAmount ; i++)
             {
+                interactions.Instance.CardsAreAnimation = true;
                 yield return DrawCard();
             }
         }
@@ -96,6 +98,7 @@ public class CardSystem : Singleton<CardSystem>
         hand.Add(card);
         CardView cardView = CardViewCreator.Instance.CreateCardCreator(card,drawPilePoint.position,drawPilePoint.rotation);
         yield return handView.AddCard(cardView);
+        interactions.Instance.CardsAreAnimation = false;
     }
 
     private void RefillDeck()
