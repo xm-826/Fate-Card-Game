@@ -485,6 +485,9 @@ MonoBehaviour:
   costTime: {fileID: 1030745827631093051}
   image: {fileID: 3003511050453573511}
   Warpper: {fileID: 4998597826305962365}
+  dropLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!210 &1249080490503348634
 SortingGroup:
   m_ObjectHideFlags: 0

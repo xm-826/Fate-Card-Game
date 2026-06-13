@@ -1628,6 +1628,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f909d80a6d28d45499de034bdd06efe7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardsAreAnimation: 0
 --- !u!1 &2104834151
 GameObject:
   m_ObjectHideFlags: 0

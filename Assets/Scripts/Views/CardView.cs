@@ -11,6 +11,7 @@ public class CardView : MonoBehaviour
     [SerializeField] private TMP_Text costTime;
     [SerializeField] private SpriteRenderer image;
     [SerializeField] private GameObject Warpper;
+    [SerializeField] private LayerMask dropLayer;
    
 
     //拖动时的起始位置
@@ -64,7 +65,7 @@ public class CardView : MonoBehaviour
         //记录初始位置信息
         dragStartPosition = transform.position;
         dragStartRotation =transform.rotation;
-        Debug.Log("位置:"+dragStartPosition);
+        //Debug.Log("位置:"+dragStartPosition);
         
         //将卡牌的旋转归零，也就是不旋转
         transform.rotation = Quaternion.Euler(0,0,0);
@@ -86,8 +87,12 @@ public class CardView : MonoBehaviour
     {
         if(!interactions.Instance.PlayerCanInteract()) return;
         //从当前卡牌向前发射射线，击中执行（有bug，击中卡牌本身也会击中，）
-        if(Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f))
+        if(Physics.Raycast(transform.position, Vector3.forward, out RaycastHit hit, 10f,dropLayer))
         {
+            /*我加入了一个检测层级，就不用再此判断是否击中卡牌本身了，只需检测是否击中该层级，即可
+            *
+            *
+            *
             // 修改bug..命中目标如果是卡牌，视为未命中，恢复到原位置，
             // 在 hit.collider 挂载的 GameObject 上查找有没有 CardView 脚本组件
             // 因为只有卡牌 GameObject 上才会挂着 CardView 脚本，所以这个判断等价于："被射线击中的东西是不是一张卡牌
@@ -98,8 +103,14 @@ public class CardView : MonoBehaviour
             }
             else
             {
-                //play card的作用
+                
             }
+            */
+
+            //在卡牌放下时创建出牌的游戏动作
+                PlayCardGA playCardGA = new(Card);
+                //在动作系统中执行出牌的游戏动作
+                ActionSystem.Instance.PerForm(playCardGA);
         }
         //未击中，则恢复到最初位置
         else

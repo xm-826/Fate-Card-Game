@@ -17,6 +17,7 @@ public class HandView : MonoBehaviour
         yield return  UpdateCardPostion(0.15f);
     }
 
+    //去除卡牌的视图
     public CardView RemoveCard(Card card)
     {
         CardView cardView = GetCardView(card);
@@ -26,6 +27,7 @@ public class HandView : MonoBehaviour
         return cardView;
 
     }
+
     public CardView GetCardView(Card card)
     {
         return cards.Where(CardView => CardView.Card == card).FirstOrDefault();

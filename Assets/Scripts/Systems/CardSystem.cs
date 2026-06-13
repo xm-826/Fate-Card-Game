@@ -23,14 +23,19 @@ public class CardSystem : Singleton<CardSystem>
     {
         ActionSystem.AttachPerformer<DrawCardGA>(DrawCardsPerformer);
         ActionSystem.AttachPerformer<DIscardAllCardsGA>(DiscardAllCardsPerformer);
+        ActionSystem.AttachPerformer<PlayCardGA>(PlayCardPerformer);
+
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnmeyTurnPreReaction,ReactionTiming.PRE);
         ActionSystem.SubscribeReaction<EnemyTurnGA>(EnmeyTurnPostReaction,ReactionTiming.POST);
+       
     }
 
     void OnDisable()
     {
         ActionSystem.DetachPerFormer<DrawCardGA>();
         ActionSystem.DetachPerFormer<DIscardAllCardsGA>();
+        ActionSystem.DetachPerFormer<PlayCardGA>();
+
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnmeyTurnPreReaction,ReactionTiming.PRE);
         ActionSystem.UnsubscribeReaction<EnemyTurnGA>(EnmeyTurnPostReaction,ReactionTiming.POST);
     }
@@ -43,6 +48,30 @@ public class CardSystem : Singleton<CardSystem>
             drawPile.Add(card);
         }
     }
+
+    //打出牌的反应
+    private IEnumerator PlayCardPerformer(PlayCardGA playCardGA)
+    {
+        //从手牌中去掉此卡牌
+        hand.Remove(playCardGA.Card);
+        //去掉卡牌的视图
+        CardView cardView = handView.RemoveCard(playCardGA.Card);
+        //卡牌返回弃牌堆的动画逻辑
+        yield return DiscardCard(cardView);
+        //当前卡牌加入弃牌堆
+        discardPile.Add(playCardGA.Card);
+
+        //可以加入卡牌起的效果
+        //遍历卡牌的效果列表
+        foreach(var effect in playCardGA.Card.Effects)
+        {
+            //放入效果
+            PerformEffectGA performEffectGA =new(effect);
+            //不是直接执行，而是作为一个反应添加
+            ActionSystem.Instance.AddReaction(performEffectGA);
+        }
+    }
+
 
     private IEnumerator DrawCardsPerformer(DrawCardGA drawCardGA)
     {
